@@ -15,7 +15,10 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@fortawesome/react-fontawesome": "^0.2.0"
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@pushprotocol/restapi": "^1.4.33",
+    "@pushprotocol/uiweb": "^1.1.19",
+    "axios": "^1.6.2"
   },
   "scripts": {
     "start": "react-scripts start",

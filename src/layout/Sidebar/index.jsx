@@ -33,9 +33,7 @@ const Sidebar = () => {
             <p className="navbar-text">Home</p>
           </div>
         </div>
-
         <hr className="navbar-border" />
-
         <div className="navbar-div">
           <div
             onClick={() => handleRedirect('/pushProtocol')}
@@ -49,18 +47,14 @@ const Sidebar = () => {
             />
             <p className="navbar-text">Push Protocol</p>
           </div>
-
-          <div
-            onClick={() => handleRedirect('/wakuProtocol')}
-            className="navbar-a"
-          >
-            <img
-              src="https://storage.googleapis.com/ethglobal-api-production/organizations%2Fpyhsm%2Flogo%2F1697648764524_waku%20logo.jpeg"
-              alt="pushProtocol"
-              loading="lazy"
-              className="navbar-icon"
-            />
-            <p className="navbar-text">Waku Protocol</p>
+          <div onClick={() => handleRedirect('/')} className="navbar-a">
+            <p className="navbar-text">USDT Pool</p>
+          </div>
+          <div onClick={() => handleRedirect('/')} className="navbar-a">
+            <p className="navbar-text">Get Free Trial</p>
+          </div>
+          <div onClick={() => handleRedirect('/')} className="navbar-a">
+            <p className="navbar-text">Buy Calls</p>
           </div>
         </div>
       </nav>

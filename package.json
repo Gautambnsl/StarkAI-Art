@@ -16,6 +16,8 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@metamask/detect-provider": "^2.0.0",
+    "@metamask/sdk-react": "^0.14.1",
     "@pushprotocol/restapi": "^1.4.45",
     "anon-aadhaar-react": "^0.1.11",
     "ethers": "5.6",

@@ -39,6 +39,12 @@ const Sidebar = () => {
         query: { tabName: 'UsdtPool' },
       });
     }
+
+    if (pathName === '/xmtp-invites') {
+      router.push({
+        query: { tabName: 'XMTPInvites' },
+      });
+    }
   };
   return (
     <>
@@ -63,13 +69,16 @@ const Sidebar = () => {
             <p className="navbar-text">Push Protocol</p>
           </div> */}
           <div onClick={() => handleRedirect('/usdt-pool')} className="navbar-a">
-            <p className="navbar-text">1Inch USDT Pool</p>
+            <p className="navbar-text">1Inch USDC Pool</p>
           </div>
           <div onClick={() => handleRedirect('/free-trial')} className="navbar-a">
             <p className="navbar-text">Get Free Trial</p>
           </div>
           <div onClick={() => handleRedirect('/buy-calls')} className="navbar-a">
             <p className="navbar-text">Buy Calls</p>
+          </div>
+          <div onClick={() => handleRedirect('/xmtp-invites')} className="navbar-a">
+            <p className="navbar-text">XMTP Invites</p>
           </div>
         </div>
       </nav>

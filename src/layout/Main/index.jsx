@@ -34,10 +34,10 @@ const Main = () => {
     };
 
     try {
-      const response = await axios.request(options);
+      // const response = await axios.request(options);
       setMessages((prev) => [
         ...prev,
-        { text: response.data.result, sender: 'self' },
+        { text: 'Hello', sender: 'self' },
       ]);
     } catch (error) {
       console.error(error);
@@ -70,19 +70,19 @@ const Main = () => {
           placeholder="Type a message..."
           className="text-input"
         /> */}
-        <div class="input-group">
+        <div className="input-group">
           <input
             type="text"
             placeholder="Type a message..."
-            class="input"
-            autocomplete="off"
+            className="input"
+            autoComplete="off"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
-          {/* <input class="button--submit" value="Subscribe" type="submit" /> */}
+          {/* <input className="button--submit" value="Subscribe" type="submit" /> */}
         <button type="submit" className='send-button'>
-          <div class="svg-wrapper-1">
-            <div class="svg-wrapper">
+          <div className="svg-wrapper-1">
+            <div className="svg-wrapper">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

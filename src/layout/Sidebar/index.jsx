@@ -1,6 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
 
 const Sidebar = () => {
@@ -23,19 +21,36 @@ const Sidebar = () => {
         query: { tabName: 'WakuProtocol' },
       });
     }
+
+    if (pathName === '/free-trial') {
+      router.push({
+        query: { tabName: 'FreeTrial' },
+      });
+    }
+
+    if (pathName === '/buy-calls') {
+      router.push({
+        query: { tabName: 'BuyCalls' },
+      });
+    }
+
+    if (pathName === '/usdt-pool') {
+      router.push({
+        query: { tabName: 'UsdtPool' },
+      });
+    }
   };
   return (
     <>
-      <nav className="navbar">
+      <nav className="navbar-main">
         <div className="navbar-div">
           <div onClick={() => handleRedirect('/')} className="navbar-a">
-            <FontAwesomeIcon icon={faHome} className="navbar-icon" />
             <p className="navbar-text">Home</p>
           </div>
         </div>
         <hr className="navbar-border" />
         <div className="navbar-div">
-          <div
+          {/* <div
             onClick={() => handleRedirect('/pushProtocol')}
             className="navbar-a"
           >
@@ -46,14 +61,14 @@ const Sidebar = () => {
               className="navbar-icon"
             />
             <p className="navbar-text">Push Protocol</p>
+          </div> */}
+          <div onClick={() => handleRedirect('/usdt-pool')} className="navbar-a">
+            <p className="navbar-text">1Inch USDT Pool</p>
           </div>
-          <div onClick={() => handleRedirect('/')} className="navbar-a">
-            <p className="navbar-text">USDT Pool</p>
-          </div>
-          <div onClick={() => handleRedirect('/')} className="navbar-a">
+          <div onClick={() => handleRedirect('/free-trial')} className="navbar-a">
             <p className="navbar-text">Get Free Trial</p>
           </div>
-          <div onClick={() => handleRedirect('/')} className="navbar-a">
+          <div onClick={() => handleRedirect('/buy-calls')} className="navbar-a">
             <p className="navbar-text">Buy Calls</p>
           </div>
         </div>

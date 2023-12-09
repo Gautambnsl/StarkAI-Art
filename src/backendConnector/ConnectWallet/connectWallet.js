@@ -16,3 +16,14 @@ export async function connectWallet() {
         return { success: false, msg: "Trouble connecting wallet!" };
     }
 }
+
+export async function getAddress() {
+    const provider = await detectEthereumProvider();
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+    await delay(500);
+    if (provider && provider.selectedAddress) {
+        return provider.selectedAddress;
+    } else {
+        return;
+    }
+}

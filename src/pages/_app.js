@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }) {
     cache: new InMemoryCache(),
   });
 
-  const app_id = 1;
+  const app_id = '609246576999142755181287323616835836365844250624';
   return (
     <>
       <ApolloProvider client={client}>

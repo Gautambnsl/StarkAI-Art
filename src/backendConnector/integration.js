@@ -5,6 +5,7 @@ import { ethers } from 'ethers';
 import data from './data';
 import { coreAbi } from './abi/coreAbi';
 import { tokenAbi } from './abi/tokenAbi';
+import { erc20Abi } from './abi/erc20Abi';
 
 export async function getNetwork() {
   const chainId = Number(
@@ -88,14 +89,91 @@ export async function getCallAvailable() {
 
 // Write
 
-export async function writeCallAvailable() {
+export async function claimFreeCalls(_pa, _pb, _pc, Input) {
   try {
-    const rpc = await getRPC();
-    const provider = new ethers.providers.JsonRpcProvider(rpc);
-    let contractAddress = await getCoreAddress();
-    const contract = new ethers.Contract(contractAddress, coreAbi, provider);
-    let userAddress = await getAddress();
-    let data = await contract.userPendingCallValue(userAddress);
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    await provider.send('eth_requestAccounts', []);
+    const signer = provider.getSigner();
+    const coreContractAddress = await getCoreAddress();
+    const contract = new ethers.Contract(coreContractAddress, coreAbi, signer);
+    let data = await contract.getFreeCall(_pa, _pb, _pc, Input);
+    return data;
+  } catch (err) {
+    return { status: false, err };
+  }
+}
+
+export async function buy20CallsFunction() {
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    await provider.send('eth_requestAccounts', []);
+    const signer = provider.getSigner();
+    const coreContractAddress = await getCoreAddress();
+    const erc20ContractAddress = await getTokenAddress();
+    const contract = new ethers.Contract(coreContractAddress, coreAbi, signer);
+    const erc = new ethers.Contract(
+      erc20ContractAddress,
+      erc20Abi,
+      signer
+    );
+    await erc.approve(coreContractAddress, '1000000');
+    let data = await contract.buy20Calls();
+    return data;
+  } catch (err) {
+    return { status: false, err };
+  }
+}
+
+export async function buy50CallsFunction() {
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    await provider.send('eth_requestAccounts', []);
+    const signer = provider.getSigner();
+    const coreContractAddress = await getCoreAddress();
+    const erc20ContractAddress = await getTokenAddress();
+    const contract = new ethers.Contract(coreContractAddress, coreAbi, signer);
+    const erc = new ethers.Contract(
+      erc20ContractAddress,
+      erc20Abi,
+      signer
+    );
+    await erc.approve(coreContractAddress, '1000000');
+    let data = await contract.buy50Calls();
+    return data;
+  } catch (err) {
+    return { status: false, err };
+  }
+}
+
+export async function buy140CallsFunction() {
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    await provider.send('eth_requestAccounts', []);
+    const signer = provider.getSigner();
+    const coreContractAddress = await getCoreAddress();
+    const erc20ContractAddress = await getTokenAddress();
+    const contract = new ethers.Contract(coreContractAddress, coreAbi, signer);
+    const erc = new ethers.Contract(
+      erc20ContractAddress,
+      erc20Abi,
+      signer
+    );
+    await erc.approve(coreContractAddress, '1000000');
+    let data = await contract.buy120Calls();
+    return data;
+  } catch (err) {
+    return { status: false, err };
+  }
+}
+
+export async function useTokenFunction() {
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    await provider.send('eth_requestAccounts', []);
+    const signer = provider.getSigner();
+    const coreContractAddress = await getCoreAddress();
+    const contract = new ethers.Contract(coreContractAddress, coreAbi, signer);
+    let data = await contract.useToken();
     return data;
   } catch (err) {
     return { status: false, err };

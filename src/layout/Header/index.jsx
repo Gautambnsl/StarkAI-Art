@@ -1,51 +1,83 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Logo from '../../assets/images/logo.png';
-import Image from 'next/image';
-import MetaMask from '../../components/ConnectMetaMask/MetaMask';
-import { getAddress } from '../../backendConnector/ConnectWallet/connectWallet';
-import { getCallAvailable } from '../../backendConnector/integration';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFire } from '@fortawesome/free-solid-svg-icons';
 
-const Header = () => {
-  const [address, setAddress] = useState('');
-  const [calls, setCalls] = useState('');
-
-  const fetchAddress = async () => {
-    const addressFromMetaMask = await getAddress();
-    setAddress(addressFromMetaMask);
-  };
-
-  const fetchCalls = async () => {
-    const addressFromMetaMask = await getCallAvailable();
-    setCalls(addressFromMetaMask);
-  };
-
-  useEffect(() => {
-    fetchAddress();
-  }, []);
-
-  useEffect(() => {
-    fetchCalls();
-  }, [parseInt(calls?._hex)]);
-
+const Header = (props) => {
+  const internalLinks = ['HOME', 'ABOUT', 'MINT', 'CONTACT US'];
+  const connectWallet = () => {};
   return (
-    <>
-      <header className="header">
-        <Image src={Logo} alt="Logo" loading="lazy" width={50} height={50} />
-        <div style={{ display: 'flex', gap: '20px' }}>
-          <MetaMask />
-          {address && (
-            <>
-              <button className="claim-free-trial-button">
-                AVL Calls : {parseInt(calls?._hex) || 0}{' '}
-                <FontAwesomeIcon icon={faFire} />
-              </button>
-            </>
-          )}
+    <div className="headerParent">
+      <div className="headerEllipse">
+        <div className="headerEllipseTwo" />
+      </div>
+      <img
+        className="spiral"
+        src="https://github.com/Gautambnsl/aiverse-nft/blob/main/final-frontend/src/assets/images/spiralBG.png?raw=true"
+      />
+      <img
+        className="bigHand"
+        src="https://github.com/Gautambnsl/aiverse-nft/blob/main/final-frontend/src/assets/images/landinghand.png?raw=true"
+      />
+      <div className="titleBarParent">
+        <div className="logoTitleParent">
+          <img
+            className="headerLogo"
+            src="https://github.com/Gautambnsl/aiverse-nft/blob/main/final-frontend/src/assets/images/logo.png?raw=true"
+          />
+          <div className="headerTitles">
+            <p className="aiverse">StarkAI-Art</p>
+            <p className="nfts">NFTs</p>
+          </div>
         </div>
-      </header>
-    </>
+        <div className="headerInternalLinks">
+          {internalLinks.map((item, index) => {
+            return (
+              <p
+                className="headerInternalLink"
+                onClick={() => console.log(item)}
+                key={index}
+              >
+                {item}
+              </p>
+            );
+          })}
+        </div>
+        <div className="headerExternalLink">
+          <button className="connectButton" onClick={connectWallet}>
+            Connect Wallet
+          </button>
+        </div>
+      </div>
+      <div className="headerContent">
+        <div style={{ backdropFilter: 'blur(1px)' }}>
+          <p className="headerAttractiveHeading">
+            "Own a piece of
+            <br />
+            Artificial Intelligence"
+          </p>
+          <p className="headerSubHeading">Imaginate & Generate</p>
+          <p className="headerHeadingContent">
+            These are AI generated image NFTs which a user can create by typing
+            a phrase and making a NFT of the image.
+          </p>
+          <div className="poweredBy">
+            <button
+              className="mintYourNft"
+              onClick={() => props.passData('mint')}
+            >
+              Mint your NFT{' '}
+            </button>
+            {/* {props.contractOwner === props.walletAddress && (
+              <button
+                className="mintYourNft"
+                onClick={clickhandler}
+                style={{ cursor: 'pointer' }}
+              >
+                Withdraw
+              </button>
+            )} */}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 
 const Header = (props) => {
   const internalLinks = ['HOME', 'ABOUT', 'MINT', 'CONTACT US'];
@@ -41,9 +41,7 @@ const Header = (props) => {
           })}
         </div>
         <div className="headerExternalLink">
-          <button className="connectButton" onClick={connectWallet}>
-            Connect Wallet
-          </button>
+          <DynamicWidget />
         </div>
       </div>
       <div className="headerContent">
@@ -65,15 +63,6 @@ const Header = (props) => {
             >
               Mint your NFT{' '}
             </button>
-            {/* {props.contractOwner === props.walletAddress && (
-              <button
-                className="mintYourNft"
-                onClick={clickhandler}
-                style={{ cursor: 'pointer' }}
-              >
-                Withdraw
-              </button>
-            )} */}
           </div>
         </div>
       </div>

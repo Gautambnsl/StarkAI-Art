@@ -127,8 +127,6 @@ const Mint = ({ passData }) => {
     }
   };
 
-  console.log('voyagerDetails', voyagerDetails);
-
   return (
     <>
       <div className="mintParent" id="mint">

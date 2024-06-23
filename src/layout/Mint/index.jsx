@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { Button, Modal, ModalBody, ModalHeader, Spinner } from 'reactstrap';
-import { useUserWallets } from '@dynamic-labs/sdk-react-core';
 import contract_class from '../../connector/abi';
 import { Contract } from 'starknet';
+import { connect } from 'starknetkit';
 
 const Mint = () => {
   const [modal, setModal] = useState(false);
@@ -11,8 +11,6 @@ const Mint = () => {
   const [phase, setPhase] = useState('');
   const [image, setImage] = useState('');
   const [ipfs, setIpfs] = useState('');
-
-  const user = useUserWallets();
 
   const handlePhaseInput = (event) => {
     setPhase(event.target.value);
@@ -75,80 +73,37 @@ const Mint = () => {
 
       if (response?.status === 200) {
         setIpfs(response?.data?.IpfsHash);
+        blockchainScript();
       }
     } catch (error) {
       console.error('Error uploading to Pinata:', error);
     }
   };
 
-  const demo = async () => {
-    console.log('user', user);
-    const provider = await user?.[0]?.connector?.getWeb3Provider();
-    console.log('provider', provider);
-
+  const blockchainScript = async () => {
+    const connection = await connect();
     const testAddress =
       '0x0157788b28c473a46b65886e379c4c605766c7d60dc037047d56b4ce8a5e3d56';
 
     const myTestContract = new Contract(
       contract_class.abi,
       testAddress,
-      provider
+      connection?.wallet?.account
     );
-    console.log('myTestContract', myTestContract);
-
-    myTestContract.connect(provider);
-
-    const bal1 = await myTestContract?.name();
-
-    console.log('Initial balance =', bal1);
-
-    // const demo = await myTestContract?.safe_mint(
-    //   '0x04490472774117D2A161282611e3Ab5B41DF018693623AE0FB4C71577a23A148',
-    //   0,
-    //   'xyz'
-    // );
-    // console.log('demo', demo)
-
     const myCall = myTestContract.populate('safe_mint', [
-      '0x04490472774117D2A161282611e3Ab5B41DF018693623AE0FB4C71577a23A148',
-      0,
-      'xyz',
+      connection?.wallet?.selectedAddress,
+      Math.floor(Math.random() * 10001),
+      ipfs,
     ]);
-    console.log('myCall', myCall);
-    const res = await myTestContract.safe_mint(myCall?.calldata);
-    console.log('res', res);
-    await provider.waitForTransaction(res.transaction_hash);
+    const res = await myTestContract.safe_mint(myCall.calldata);
+    alert('Congratulations, Your NFT has been successfully minted');
+    setModal(false);
+    setLoading(false);
+    setPhase('');
+    setImage('');
+    setIpfs('')
   };
 
-  demo();
-
-  // const contract = async () => {
-  //   const connection = await connect({ modalMode: 'neverAsk' });
-  //   console.log('connection', connection);
-
-  //   const testAddress =
-  //     '0x0157788b28c473a46b65886e379c4c605766c7d60dc037047d56b4ce8a5e3d56';
-
-  //   const myTestContract = new Contract(
-  //     contract_class.abi,
-  //     testAddress,
-  //     connection?.wallet
-  //   );
-
-  //   console.log('myTestContract', myTestContract);
-
-  //   myTestContract.connect(connection?.wallet);
-
-  //   const bal1 = await myTestContract?.name();
-
-  //   console.log('Initial balance =', bal1);
-  // };
-
-  // useEffect(() => {
-  //   if (account?.connector) {
-  //     contract();
-  //   }
-  // }, [account?.connector]);
   return (
     <>
       <div className="mintParent" id="mint">
@@ -168,15 +123,6 @@ const Mint = () => {
           >
             Mint Now
           </button>
-          {/* {account?.connectors.map((connector) => (
-            <button
-              className="buttonMint"
-              style={{ cursor: 'pointer' }}
-              onClick={() => account?.connect({ connector })}
-            >
-              Connect Now
-            </button>
-          ))} */}
         </div>
         <div className="mintFooter">
           <img

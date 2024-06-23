@@ -5,17 +5,21 @@ import contract_class from '../../connector/abi';
 import { Contract } from 'starknet';
 import { connect } from 'starknetkit';
 
-const Mint = () => {
+const Mint = ({ passData }) => {
   const [modal, setModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState('');
   const [image, setImage] = useState('');
+  const [voyagerDetails, setVoyagerDetails] = useState('');
 
   const handlePhaseInput = (event) => {
     setPhase(event.target.value);
   };
 
   const toggle = () => setModal(!modal);
+
+  const toggleSuccessModal = () => setSuccessModal(false);
 
   const handleMinting = async () => {
     if (phase.trim() === '') {
@@ -94,12 +98,36 @@ const Mint = () => {
       `https://silver-accessible-locust-527.mypinata.cloud/ipfs/${ipfs}`,
     ]);
     const res = await myTestContract.safe_mint(myCall.calldata);
-    alert('Congratulations, Your NFT has been successfully minted');
-    setModal(false);
-    setLoading(false);
-    setPhase('');
-    setImage('');
+    setTimeout(() => {
+      getVoyager();
+      setModal(false);
+      setLoading(false);
+      setPhase('');
+      setImage('');
+    }, 5000);
   };
+
+  const getVoyager = async () => {
+    try {
+      const url = `https://sepolia-api.voyager.online/beta/contracts/0x0157788b28c473a46b65886e379c4c605766c7d60dc037047d56b4ce8a5e3d56`;
+      const response = await axios.get(url, {
+        headers: {
+          'x-api-key': 'jXFqfRuIFk8mdkJqKM1x6BxPLoBxTbu3MopahOfi',
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        setVoyagerDetails(response?.data);
+        setSuccessModal(true);
+      }
+    } catch (error) {
+      console.error('Error uploading to Pinata:', error);
+    }
+  };
+
+  console.log('voyagerDetails', voyagerDetails);
 
   return (
     <>
@@ -122,6 +150,13 @@ const Mint = () => {
           </button>
         </div>
         <div className="mintFooter">
+          <img
+            className="starnetlogo"
+            src="https://storage.googleapis.com/ethglobal-api-production/organizations%2Fp7xo9%2Flogo%2F1710681876331_organizations_4388j_images_SN-Symbol-Gradient.png"
+            alt="Logo Mobile"
+            width={75}
+            height={75}
+          />
           <img
             className="logo"
             src="https://github.com/Gautambnsl/aiverse-nft/blob/main/final-frontend/src/assets/images/logo.png?raw=true"
@@ -147,6 +182,13 @@ const Mint = () => {
         </div>
         <div className="mintFooterMobile">
           <img
+            className="starnetlogoMobile"
+            src="https://storage.googleapis.com/ethglobal-api-production/organizations%2Fp7xo9%2Flogo%2F1710681876331_organizations_4388j_images_SN-Symbol-Gradient.png"
+            alt="Logo Mobile"
+            width={75}
+            height={75}
+          />
+          <img
             className="logoMobile"
             src="https://github.com/Gautambnsl/aiverse-nft/blob/main/final-frontend/src/assets/images/logo.png?raw=true"
             alt="Logo Mobile"
@@ -170,9 +212,14 @@ const Mint = () => {
           </div>
         </div>
       </div>
-      <Modal isOpen={modal} toggle={toggle} centered>
-        <ModalHeader toggle={toggle}>
-          {loading ? 'Your NFT is ready' : 'Wait your NFT is being loading'}
+      <Modal isOpen={modal} centered>
+        <ModalHeader
+          toggle={toggle}
+          style={{
+            fontWeight: '800',
+          }}
+        >
+          {loading ? 'Your NFT is ready' : 'Wait your AI-NFT is being created'}
         </ModalHeader>
         <ModalBody>
           <div
@@ -206,6 +253,95 @@ const Mint = () => {
               <Spinner color="dark" type="grow" />
             )}
           </div>
+        </ModalBody>
+      </Modal>
+      <Modal isOpen={successModal} toggle={toggleSuccessModal} centered>
+        <ModalHeader toggle={toggleSuccessModal} style={{ color: '#547354' }}>
+          ⭐ Success ⭐
+        </ModalHeader>
+        <ModalBody>
+          <div>Congratulations, Your NFT has been successfully minted</div>
+          <table>
+            <tbody>
+              <tr
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '180%',
+                }}
+              >
+                <td>
+                  <b>Token Symbol</b>
+                </td>
+                <td>{voyagerDetails?.tokenSymbol}</td>
+              </tr>
+              <tr
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '180%',
+                }}
+              >
+                <td>
+                  <b>Token Name</b>
+                </td>
+                <td>{voyagerDetails?.tokenName}</td>
+              </tr>
+              <tr
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '180%',
+                }}
+              >
+                <td>
+                  <b>Voyager Hash</b>
+                </td>
+                <td>{`${voyagerDetails?.blockHash?.substr(
+                  0,
+                  8
+                )}...${voyagerDetails?.blockHash?.substr(-8)}`}</td>
+              </tr>
+              <tr
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  width: '180%',
+                }}
+              >
+                <td>
+                  <b>Creation Time</b>
+                </td>
+                <td>
+                  {new Date(
+                    voyagerDetails?.creationTimestamp * 1000
+                  ).toDateString()}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <a
+            href="https://sepolia.voyager.online/contract/0x0157788b28c473a46b65886e379c4c605766c7d60dc037047d56b4ce8a5e3d56"
+            target="_blank"
+            style={{ color: 'black' }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '8px',
+                marginTop: '25px',
+              }}
+            >
+              <img
+                src="data:image/webp;base64,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"
+                width={25}
+                height={25}
+                alt="voyager"
+              />
+              From Voyager
+            </div>
+          </a>
         </ModalBody>
       </Modal>
     </>

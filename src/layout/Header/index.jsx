@@ -1,10 +1,14 @@
 import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 
-const Header = (props) => {
+const Header = ({ passData }) => {
   const internalLinks = ['HOME', 'ABOUT', 'MINT', 'CONTACT US'];
-  const connectWallet = () => {};
+
+  const handleScrollTo = (data) => {
+    passData(data.toLowerCase());
+  };
+
   return (
-    <div className="headerParent">
+    <div className="headerParent" id="home">
       <div className="headerEllipse">
         <div className="headerEllipseTwo" />
       </div>
@@ -32,7 +36,7 @@ const Header = (props) => {
             return (
               <p
                 className="headerInternalLink"
-                onClick={() => console.log(item)}
+                onClick={() => handleScrollTo(item)}
                 key={index}
               >
                 {item}
@@ -47,21 +51,17 @@ const Header = (props) => {
       <div className="headerContent">
         <div style={{ backdropFilter: 'blur(1px)' }}>
           <p className="headerAttractiveHeading">
-            "Own a piece of
+            Own a piece of
             <br />
-            Artificial Intelligence"
+            Artificial Intelligence
           </p>
           <p className="headerSubHeading">Imaginate & Generate</p>
           <p className="headerHeadingContent">
-            These are AI generated image NFTs which a user can create by typing
-            a phrase and making a NFT of the image.
+            Interactive Word-Driven AI NFT Art Creation Game on StarkNet
           </p>
           <div className="poweredBy">
-            <button
-              className="mintYourNft"
-              onClick={() => props.passData('mint')}
-            >
-              Mint your NFT{' '}
+            <button className="mintYourNft" onClick={() => passData('mint')}>
+              Play Now
             </button>
           </div>
         </div>

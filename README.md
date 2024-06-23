@@ -1,4 +1,4 @@
-### Project Name: StarkAI Art
+### Project Name: StarkAI Art Game
 
 **Project Description:**
 

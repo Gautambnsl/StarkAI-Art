@@ -10,7 +10,6 @@ const Mint = () => {
   const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState('');
   const [image, setImage] = useState('');
-  const [ipfs, setIpfs] = useState('');
 
   const handlePhaseInput = (event) => {
     setPhase(event.target.value);
@@ -72,15 +71,14 @@ const Mint = () => {
       });
 
       if (response?.status === 200) {
-        setIpfs(response?.data?.IpfsHash);
-        blockchainScript();
+        blockchainScript(response?.data?.IpfsHash);
       }
     } catch (error) {
       console.error('Error uploading to Pinata:', error);
     }
   };
 
-  const blockchainScript = async () => {
+  const blockchainScript = async (ipfs) => {
     const connection = await connect();
     const testAddress =
       '0x0157788b28c473a46b65886e379c4c605766c7d60dc037047d56b4ce8a5e3d56';
@@ -93,7 +91,7 @@ const Mint = () => {
     const myCall = myTestContract.populate('safe_mint', [
       connection?.wallet?.selectedAddress,
       Math.floor(Math.random() * 10001),
-      ipfs,
+      `https://silver-accessible-locust-527.mypinata.cloud/ipfs/${ipfs}`,
     ]);
     const res = await myTestContract.safe_mint(myCall.calldata);
     alert('Congratulations, Your NFT has been successfully minted');
@@ -101,7 +99,6 @@ const Mint = () => {
     setLoading(false);
     setPhase('');
     setImage('');
-    setIpfs('')
   };
 
   return (
